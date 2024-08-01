@@ -14,11 +14,7 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-console.log(process.env.DB_HOST)
-console.log(process.env.DB_PASSWORD)
-console.log(process.env.DB_NAME)
-console.log(parseInt(process.env.DB_PORT, 10))
-
+// TODO: поменять на енв
 @Module({
   imports: [
     AuthModule,
@@ -28,11 +24,11 @@ console.log(parseInt(process.env.DB_PORT, 10))
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: '127.0.0.1',
-      port: 5432,
-      username: 'dashboard_user',
-      password: 'dashboard_user_1234',
-      database: 'dashboard',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT, 10),
+      username: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [join(__dirname, '**', '*.entity.{ts,js}')],
       migrations: [join(__dirname, '/../../', 'database/migrations/**/*{.ts,.js}')],
       synchronize: false,
