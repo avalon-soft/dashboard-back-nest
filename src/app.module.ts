@@ -14,7 +14,6 @@ import * as dotenv from 'dotenv';
 
 dotenv.config();
 
-// TODO: поменять на енв
 @Module({
   imports: [
     AuthModule,
