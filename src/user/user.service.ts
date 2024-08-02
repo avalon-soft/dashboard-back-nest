@@ -12,11 +12,13 @@ export class UserService {
   ) {}
   async create(createUserDto: CreateUserDto) {
     const user: User = new User();
-    user.name = createUserDto.name;
+    user.name = createUserDto.full_name;
     user.username = createUserDto.username;
 
     const saltOrRounds = 10;
     user.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
+
+    console.log(user)
 
     const savedUser =  await this.userRepository.save(user);
     delete savedUser.password
@@ -33,7 +35,7 @@ export class UserService {
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
-    user.name = updateUserDto.name;
+    user.name = updateUserDto.full_name;
     user.username = updateUserDto.username;
     user.password = updateUserDto.password;
     user.id = id;

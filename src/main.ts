@@ -1,9 +1,24 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import { ValidationPipe, HttpException } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
+  app.useGlobalPipes(new ValidationPipe({
+    errorHttpStatusCode: 400,
+    exceptionFactory: (errors) => {
+      const errorResponse = {
+        message: 'Validation failed',
+        errors: errors.map((error) => {
+          const property = error.property;
+          const constraintError = Object.values(error.constraints)[0];
+          return { property, error: constraintError };
+        }),
+      };
+      return new HttpException(errorResponse, 400);
+    },
+  }));
 
   const options: SwaggerDocumentOptions =  {
     operationIdFactory: (
