@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException
+} from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -6,6 +10,8 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { Auth } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import {Repository} from 'typeorm'
+import {jwtConstants} from './auth.constants'
+import {Request} from 'express'
 
 @Injectable()
 export class AuthService {
@@ -13,7 +19,6 @@ export class AuthService {
     private userService: UserService,
     private jwtService: JwtService,
     @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
-
   ) {}
 
   async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string }> {
@@ -33,5 +38,26 @@ export class AuthService {
     return {
       access_token: token,
     };
+
+  }
+
+  async getMeInfo(context: ExecutionContext): Promise<{}> {
+    const request = context.switchToHttp().getRequest();
+    const token = this.extractTokenFromHeader(request);
+
+    const payload = await this.jwtService.verifyAsync(
+      token,
+      {
+        secret: jwtConstants.secret
+      }
+    );
+    console.log(payload)
+    const { user } = payload;
+    return user
+  }
+
+  private extractTokenFromHeader(request: Request): string | undefined {
+    const [type, token] = request.headers.authorization?.split(' ') ?? [];
+    return type === 'Bearer' ? token : undefined;
   }
 }
