@@ -14,4 +14,10 @@ export class AppController {
   getTableData(): any[] {
     return this.appService.getTableData();
   }
+
+  // @UseGuards(AuthGuard)
+  @Get('chart')
+  getChartData(): any[] {
+    return this.appService.getChartData();
+  }
 }
