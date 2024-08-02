@@ -1,6 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { faker } from '@faker-js/faker';
 
+interface Statistic {
+  userData: any[];
+  salesData: any[];
+  trafficData: any[];
+}
 interface ChartData {
   options: {
     color: string;
@@ -13,6 +18,63 @@ interface ChartData {
 }
 @Injectable()
 export class AppService {
+
+  getStatisticData(): Statistic {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const userData = [
+      {
+        options: {
+          color: faker.internet.color(),
+          name: 'User Count',
+        },
+        data: months.map((month) => ({
+          x: month,
+          y: faker.number.int({ min: 100, max: 500 }),
+        })),
+      },
+    ];
+
+    const salesData = [
+      {
+        options: {
+          color: faker.internet.color(),
+          name: 'Sales Revenue',
+        },
+        data: [
+          { x: 'Q1', y: faker.number.int({ min: 1000, max: 5000 }) },
+          { x: 'Q2', y: faker.number.int({ min: 1000, max: 5000 }) },
+          { x: 'Q3', y: faker.number.int({ min: 1000, max: 5000 }) },
+          { x: 'Q4', y: faker.number.int({ min: 1000, max: 5000 }) },
+        ],
+      },
+    ];
+
+    const trafficData = [
+      {
+        options: {
+          color: faker.internet.color(),
+          name: 'Page Views',
+        },
+        data: months.map((month) => ({
+          x: month,
+          y: faker.number.int({ min: 1000, max: 5000 }),
+        })),
+      },
+      {
+        options: {
+          color: faker.internet.color(),
+          name: 'Unique Visitors',
+        },
+        data: months.map((month) => ({
+          x: month,
+          y: faker.number.int({ min: 500, max: 2000 }),
+        })),
+      },
+    ];
+
+    return {userData, salesData, trafficData}
+  }
+
   getTableData(): any[] {
     const data = [];
     for (let i = 0; i < 100; i++) {
