@@ -33,7 +33,7 @@ RUN npm run build
 ## Delete npn registry credentials
 RUN rm -f /root/.npmrc
 ENV TZ="Europe/Kiev"
-ENV HOST 0.0.0.0
+# ENV HOST 0.0.0.0
 EXPOSE 3100
 CMD ["npm", "run", "start:prod"]
 
