@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, HttpException } from '@nestjs/common';
-// import { AllExceptionsFilter } from './exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -21,8 +20,6 @@ async function bootstrap() {
     },
   }));
 
-  // app.useGlobalFilters(new AllExceptionsFilter());
-
   const options: SwaggerDocumentOptions =  {
     operationIdFactory: (
       controllerKey: string,
@@ -34,16 +31,16 @@ async function bootstrap() {
     .setTitle('Dashboard Swagger')
     .setDescription('The dashboard API description')
     .setVersion('1.0')
-    .addBearerAuth(
-      {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
-      },
-      'token',
-    )
+    .addSecurity('Bearer', {
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      in: 'header',
+      name: 'Authorization',
+    })
     .build();
   const document = SwaggerModule.createDocument(app, config, options);
+  document.security = [{ Bearer: [] }];
   SwaggerModule.setup('swagger', app, document);
 
   await app.listen(3100);

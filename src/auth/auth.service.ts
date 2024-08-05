@@ -50,8 +50,6 @@ export class AuthService {
         secret: jwtConstants.secret
       }
     );
-    console.log(1111)
-    console.log(payload)
     const { user } = payload;
     return user
   }
