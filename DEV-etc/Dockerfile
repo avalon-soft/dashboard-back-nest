@@ -34,8 +34,7 @@ RUN npm run build
 RUN rm -f /root/.npmrc
 ENV TZ="Europe/Kiev"
 ENV HOST 0.0.0.0
-ENV PORT 8080
-EXPOSE 8080
+EXPOSE 3100
 CMD ["npm", "run", "start:prod"]
 
 

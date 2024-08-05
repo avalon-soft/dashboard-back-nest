@@ -1,11 +1,11 @@
 ingress:
   enabled: true
-  path: "/"
+  path: "/api/"
 service:
   enabled: true
   name: backend
-  externalPort: 3000
-  internalPort: 3000
+  externalPort: 3100
+  internalPort: 3100
 livenessProbe:
   enabled: false
   path: "/status"
