@@ -27,7 +27,7 @@ RUN source .env
 RUN if grep -q 'VUE_APP_CROWDIN_PROJECT_ID' .env; then echo 'CROWDIN ENV EXIST'; node node_modules/@ananasbear/crowdin/app/app.js; else echo 'CROWDIN ENV DOEST NOT EXIST';fi
 # build
 # CI=false npm run build
-# RUN npm run build
+RUN npm run build
 # RUN [[ -d dist ]] && mv dist web; [[ -d build ]] && mv build web;
 
 ## Delete npn registry credentials
@@ -38,26 +38,5 @@ ENV PORT 8080
 EXPOSE 8080
 CMD ["npm", "run", "start:prod"]
 
-# ## make image for deployment
-# FROM base AS stable
-# WORKDIR /app
-# COPY --from=builder /app/.output/ /app/.output/
-# # expose the host and port 3000 to the server
-# ENV HOST 0.0.0.0
-# ENV TZ="europe/kiev"
-# EXPOSE 3000
-# # run the build project with node
-# ENTRYPOINT ["node", ".output/server/index.mjs"]
-
-# ## make image for deployment
-# FROM nginx:stable-alpine
-# COPY --from=builder /app/dist /app/web/
-# COPY --from=builder /app/.env /app/build_envs
-# ENV TZ="Europe/Kiev"
-# COPY DEV-etc/nginx-site.conf /etc/nginx/conf.d/default.conf
-
-# EXPOSE 80
-# # Start Nginx to serve the application
-# CMD ["nginx", "-g", "daemon off;"]
 
   
