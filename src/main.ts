@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, HttpException } from '@nestjs/common';
+// import { AllExceptionsFilter } from './exceptions.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -19,6 +20,8 @@ async function bootstrap() {
       return new HttpException(errorResponse, 400);
     },
   }));
+
+  // app.useGlobalFilters(new AllExceptionsFilter());
 
   const options: SwaggerDocumentOptions =  {
     operationIdFactory: (

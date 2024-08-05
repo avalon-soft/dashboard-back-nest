@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -15,6 +15,19 @@ export class UserService {
     user.name = createUserDto.full_name;
     user.username = createUserDto.username;
 
+    const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.username } });
+    if (existingUser) {
+      throw new HttpException({
+        "message": "Validation failed",
+        "errors": [
+          {
+            "property": "username",
+            "error": "Username already exists"
+          }
+        ]
+      }, 400);
+    }
+
     const saltOrRounds = 10;
     user.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
 
@@ -23,6 +36,7 @@ export class UserService {
     const savedUser =  await this.userRepository.save(user);
     delete savedUser.password
     return savedUser
+
   }
 
   findAll(): Promise<User[]> {
