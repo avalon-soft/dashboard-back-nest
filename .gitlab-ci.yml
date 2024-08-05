@@ -1,0 +1,58 @@
+variables:
+  AUTO_DEVOPS_BUILD_IMAGE_FORWARDED_CI_VARIABLES: CI_COMMIT_SHA,CI_ENVIRONMENT_NAME,BUILD_ENV,ENV,TRANSLATE,NPM_REG_TOKEN,SSH_PRIVATE_KEY
+  POSTGRES_ENABLED: "false"
+  REVIEW_DISABLED: "true"
+  TEST_DISABLED: "true"
+  SAST_DISABLED: "true"
+  PERFORMANCE_DISABLED: "true"
+  BROWSER_PERFORMANCE_DISABLED: "true"
+  CODE_QUALITY_DISABLED: "true"
+  CONTAINER_SCANNING_DISABLED: "true"
+  SECRET_DETECTION_DISABLED: "true"
+
+
+include:
+  - template: Auto-DevOps.gitlab-ci.yml
+  - remote: https://gitlab.com/gitlab-org/gitlab/-/raw/v16.10.0-ee/lib/gitlab/ci/templates/Jobs/Deploy.latest.gitlab-ci.yml
+
+
+build:
+  environment:
+    name: $CI_COMMIT_BRANCH
+
+staging:
+  rules:
+    - if: '($CI_KUBERNETES_ACTIVE == null || $CI_KUBERNETES_ACTIVE == "") && ($KUBECONFIG == null || $KUBECONFIG == "")'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+      when: never
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+      when: never
+    # - if: '$STAGING_ENABLED'
+    - if: '$STAGING_ENABLED == "true"'
+  environment:
+    name: $CI_COMMIT_BRANCH
+  before_script:
+    - IFS=$'\n' && for VARS in $(echo "$BUILD_ENV" | grep -vE "^(\W+|)(#|$)" | grep '=' | sed "s/^/K8S_SECRET_/g" | tr -d \" | tr -d \' ); do export $VARS; done
+    - env | grep -oE "K8S_SECRET_.+=" | tr -d \=
+    - unset AUTO_DEVOPS_CHART
+    - unset AUTO_DEVOPS_CHART_REPOSITORY
+    - unset AUTO_DEVOPS_CHART_REPOSITORY_PASSWORD
+    - unset AUTO_DEVOPS_CHART_REPOSITORY_USERNAME
+    - unset HELM_UPGRADE_EXTRA_ARGS
+    # - unset DB_MIGRATE
+
+
+production_manual:
+  environment:
+    name: $CI_COMMIT_BRANCH
+  before_script:
+    - IFS=$'\n' && for VARS in $(echo "$BUILD_ENV" | grep -vE "^(\W+|)(#|$)" | grep '=' | sed "s/^/K8S_SECRET_/g" | tr -d \" | tr -d \' ); do  export $VARS; done
+    - env | grep -oE "K8S_SECRET_.+=" | tr -d \=
+    - unset AUTO_DEVOPS_CHART
+    - unset AUTO_DEVOPS_CHART_REPOSITORY
+    - unset AUTO_DEVOPS_CHART_REPOSITORY_PASSWORD
+    - unset AUTO_DEVOPS_CHART_REPOSITORY_USERNAME
+    - unset HELM_UPGRADE_EXTRA_ARGS
+    # - unset DB_MIGRATE
+
