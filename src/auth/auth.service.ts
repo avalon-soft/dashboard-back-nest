@@ -23,13 +23,12 @@ export class AuthService {
 
   async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string }> {
     const user = await this.userService.findOne(createAuthDto.username);
-    console.log(user)
+
     const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
     if (!isMatch) {
       throw new UnauthorizedException();
     }
 
-    console.log(user)
     const payload = { sub: user.id, username: user.username };
     const token = await this.jwtService.signAsync(payload)
 
@@ -51,6 +50,7 @@ export class AuthService {
         secret: jwtConstants.secret
       }
     );
+    console.log(1111)
     console.log(payload)
     const { user } = payload;
     return user
