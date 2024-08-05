@@ -9,11 +9,10 @@ async function bootstrap() {
   const host = process.env.HOST || '0.0.0.0';
   const port = process.env.PORT || 3100;
 
-  // const app = await NestFactory.create(AppModule);
-  // await app.listen(port, host);
-
-
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule, {
+    cors: true,
+    logger: process.env.DEBUG ? ['debug'] : undefined
+  });
   app.useGlobalPipes(new ValidationPipe({
     errorHttpStatusCode: 400,
     exceptionFactory: (errors) => {
