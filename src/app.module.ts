@@ -11,7 +11,7 @@ import { AppService } from './app.service';
 
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { CertificateModule } from './certificate/certificate.module';
+// import { CertificateModule } from './certificate/certificate.module';
 
 import { join } from 'path';
 import * as dotenv from 'dotenv';
@@ -39,7 +39,7 @@ dotenv.config();
       migrationsTableName: 'typeorm_migrations',
       migrationsRun: false,
     }),
-    CertificateModule,
+    // CertificateModule,
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, '..', 'assets'),
       serveRoot: '/assets',
