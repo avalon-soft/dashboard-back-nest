@@ -22,7 +22,7 @@ export class AuthService {
   ) {}
 
   async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string } | { error: string}> {
-    const user = await this.userService.findOne(createAuthDto.username);
+    const user = await this.userService.findOne(createAuthDto.email);
 
     console.log(user)
 

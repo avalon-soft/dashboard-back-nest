@@ -13,16 +13,16 @@ export class UserService {
   async create(createUserDto: CreateUserDto) {
     const user: User = new User();
     user.name = createUserDto.full_name;
-    user.username = createUserDto.username;
+    user.username = createUserDto.email;
 
-    const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.username } });
+    const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.email } });
     if (existingUser) {
       throw new HttpException({
         "message": "Validation failed",
         "errors": [
           {
-            "property": "username",
-            "error": "Username already exists"
+            "property": "email",
+            "error": "Email already exists"
           }
         ]
       }, 400);
@@ -50,7 +50,7 @@ export class UserService {
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
     const user: User = new User();
     user.name = updateUserDto.full_name;
-    user.username = updateUserDto.username;
+    user.username = updateUserDto.email;
     user.password = updateUserDto.password;
     user.id = id;
     return this.userRepository.save(user);
