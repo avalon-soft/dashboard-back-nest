@@ -18,3 +18,27 @@ application:
   part: backend
   migrateCommand: []
 
+
+
+customResources:
+  - service-psql-nodeport:
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: dashboard-back-nest-postgresql-custom
+      labels:
+        app: postgresql
+      annotations:        
+    spec:
+      ports:
+      - name: tcp-postgresql
+        nodePort: 30543  
+        port: 5432
+        protocol: TCP
+        targetPort: tcp-postgresql
+      selector:
+        app: postgresql
+        release: dashboard-back-nest-postgresql
+        role: master
+      sessionAffinity: None
+      type: NodePort
