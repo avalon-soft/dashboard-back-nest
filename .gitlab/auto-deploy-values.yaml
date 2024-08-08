@@ -1,6 +1,6 @@
 ingress:
   enabled: true
-  path: "/"
+  path: "/api/"
 service:
   enabled: true
   name: backend
