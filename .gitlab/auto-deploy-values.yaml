@@ -1,6 +1,6 @@
 ingress:
   enabled: true
-  path: "/"
+  path: "/api/"
 service:
   enabled: true
   name: backend
@@ -40,5 +40,27 @@ customResources:
         app: postgresql
         release: dashboard-back-nest-postgresql
         role: master
+      sessionAffinity: None
+      type: NodePort
+
+  - service-back-nodeport:
+    apiVersion: v1
+    kind: Service
+    metadata:
+      name: dashboard-back-nest-custom
+      labels:
+        app: backend
+      annotations:        
+    spec:
+      ports:
+      - name: backend
+        nodePort: 30310
+        port: 3100
+        protocol: TCP
+        targetPort: 3100
+      selector:
+        app: dashboard-back-nest
+        tier: backend
+        track: stable
       sessionAffinity: None
       type: NodePort
