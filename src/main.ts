@@ -2,16 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder, SwaggerDocumentOptions } from '@nestjs/swagger';
 import { AppModule } from './app.module';
 import { ValidationPipe, HttpException } from '@nestjs/common';
-import * as process from 'process'
 
 
 async function bootstrap() {
-  const host = process.env.HOST || '0.0.0.0';
-  const port = process.env.PORT || 3100;
-
   const app = await NestFactory.create(AppModule, {
-    cors: true,
-    logger: process.env.DEBUG ? ['debug'] : undefined
+    cors: true
   });
   app.useGlobalPipes(new ValidationPipe({
     errorHttpStatusCode: 400,
@@ -46,12 +41,14 @@ async function bootstrap() {
       in: 'header',
       name: 'Authorization',
     })
+    .setBasePath('api/swagger')
     .build();
   const document = SwaggerModule.createDocument(app, config, options);
   document.security = [{ Bearer: [] }];
   SwaggerModule.setup('swagger', app, document);
 
-  await app.listen(port, host);
+  // await app.listen(port, host);
+  await app.listen(3100);
 
   console.log(`App running on: ${await app.getUrl()}`);
 }
