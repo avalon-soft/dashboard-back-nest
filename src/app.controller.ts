@@ -3,7 +3,7 @@ import { AppService } from './app.service';
 import { AuthGuard } from './auth/auth.guard';
 
 @Controller({
-  path: 'api/v1',
+  path: 'v1',
   version: 'v1',
 })
 export class AppController {

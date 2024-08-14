@@ -15,7 +15,7 @@ import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 
 @ApiTags('Auth')
 @Controller({
-  path: 'api/v1/auth',
+  path: 'v1/auth',
   version: 'v1',
 })
 export class AuthController {

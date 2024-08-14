@@ -7,7 +7,7 @@ import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller({
-  path: 'api/v1/user',
+  path: 'v1/user',
   version: 'v1',
 })
 export class UserController {
