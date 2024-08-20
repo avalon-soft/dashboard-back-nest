@@ -45,7 +45,9 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config, options);
   document.security = [{ Bearer: [] }];
-  SwaggerModule.setup('/swagger', app, document);
+  SwaggerModule.setup('/swagger', app, document, {
+    useGlobalPrefix: true,
+  });
 
   // await app.listen(port, host);
   await app.listen(3100);
