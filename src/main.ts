@@ -8,9 +8,7 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: true
   });
-  app.setGlobalPrefix('api', {
-    exclude: ['swagger'],
-  });
+  app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({
     errorHttpStatusCode: 400,
     exceptionFactory: (errors) => {
@@ -47,7 +45,7 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config, options);
   document.security = [{ Bearer: [] }];
-  SwaggerModule.setup('swagger', app, document);
+  SwaggerModule.setup('/swagger', app, document);
 
   // await app.listen(port, host);
   await app.listen(3100);
