@@ -9,6 +9,11 @@ import { AuthGuard } from './auth/auth.guard';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
+  @Get('test')
+  getTestData(): {} {
+    return { detail: 'OK' };
+  }
+
   @UseGuards(AuthGuard)
   @Get('statistic')
   getStatisticData(): {} {
