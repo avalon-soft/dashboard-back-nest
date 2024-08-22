@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {Exclude} from 'class-transformer'
 
 @Entity('user')
 export class User {
@@ -13,6 +14,10 @@ export class User {
   username: string;
 
   @Column({ type: 'varchar' })
+  @Exclude()
   password: string;
 
+  constructor(partial: Partial<User>) {
+    Object.assign(this, partial);
+  }
 }

@@ -11,10 +11,6 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
   async create(createUserDto: CreateUserDto) {
-    const user: User = new User();
-    user.name = createUserDto.full_name;
-    user.username = createUserDto.email;
-
     const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.email } });
     if (existingUser) {
       throw new HttpException({
@@ -29,9 +25,13 @@ export class UserService {
     }
 
     const saltOrRounds = 10;
-    user.password = await bcrypt.hash(createUserDto.password, saltOrRounds);
+    const newPass = await bcrypt.hash(createUserDto.password, saltOrRounds);
 
-    console.log(user)
+    const user: User = new User({
+      name: createUserDto.full_name,
+      username: createUserDto.email,
+      password: newPass
+    });
 
     const savedUser =  await this.userRepository.save(user);
     delete savedUser.password
@@ -48,11 +48,12 @@ export class UserService {
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    const user: User = new User();
-    user.name = updateUserDto.full_name;
-    user.username = updateUserDto.email;
-    user.password = updateUserDto.password;
-    user.id = id;
+    const user: User = new User({
+      id,
+      name: updateUserDto.full_name,
+      username: updateUserDto.email,
+      password: updateUserDto.password
+    });
     return this.userRepository.save(user);
   }
 

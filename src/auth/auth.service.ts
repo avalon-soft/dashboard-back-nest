@@ -24,12 +24,9 @@ export class AuthService {
   async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string } | { error: string}> {
     const user = await this.userService.findOne(createAuthDto.email);
 
-    console.log(user)
-
     if (user) {
       const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
       if (!isMatch) {
-        // throw new UnauthorizedException();
         throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
       }
 
@@ -47,11 +44,10 @@ export class AuthService {
   }
 
   async getMeInfo(user: any): Promise<{}> {
-    user.id = user.sub
-    delete user.sub
-    delete user.iat
-    delete user.exp
-    return user
+    // TODO: сделать норм сериалайзер
+    const userFullInfo = await this.userService.findOne(user.username);
+    delete userFullInfo.password
+    return userFullInfo
   }
 
   private extractTokenFromHeader(request: Request): string | undefined {
