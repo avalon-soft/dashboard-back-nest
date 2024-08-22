@@ -12,6 +12,7 @@ import { AuthGuard } from './auth.guard';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto'
 import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+// import {AuthUser} from '../user/user.decorator'
 
 @ApiTags('Auth')
 @Controller({
@@ -29,9 +30,9 @@ export class AuthController {
   }
 
   @ApiCreatedResponse({ description: 'Get me info' })
-  @UseGuards(AuthGuard)
   @Get('me')
-  getProfile(@Request() req) {
-    return this.authService.getMeInfo(req);
+  @UseGuards(AuthGuard)
+  getProfile(@Request() req:any) {
+    return this.authService.getMeInfo(req.user);
   }
 }

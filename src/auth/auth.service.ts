@@ -29,7 +29,8 @@ export class AuthService {
     if (user) {
       const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
       if (!isMatch) {
-        throw new UnauthorizedException();
+        // throw new UnauthorizedException();
+        throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
       }
 
       const payload = { sub: user.id, username: user.username };
@@ -45,17 +46,11 @@ export class AuthService {
 
   }
 
-  async getMeInfo(context: ExecutionContext): Promise<{}> {
-    const request = context.switchToHttp().getRequest();
-    const token = this.extractTokenFromHeader(request);
-
-    const payload = await this.jwtService.verifyAsync(
-      token,
-      {
-        secret: jwtConstants.secret
-      }
-    );
-    const { user } = payload;
+  async getMeInfo(user: any): Promise<{}> {
+    user.id = user.sub
+    delete user.sub
+    delete user.iat
+    delete user.exp
     return user
   }
 
