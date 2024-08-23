@@ -5,7 +5,6 @@ import { ConfigModule } from '@nestjs/config';
 import * as process from 'process'
 import { ServeStaticModule } from '@nestjs/serve-static';
 
-
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 

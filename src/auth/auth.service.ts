@@ -1,7 +1,7 @@
 import {
-  ExecutionContext, HttpException, HttpStatus,
+  HttpException,
+  HttpStatus,
   Injectable,
-  UnauthorizedException,
 } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserService } from '../user/user.service';
@@ -10,7 +10,6 @@ import { CreateAuthDto } from './dto/create-auth.dto';
 import { Auth } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import {Repository} from 'typeorm'
-import {jwtConstants} from './auth.constants'
 import {Request} from 'express'
 
 @Injectable()

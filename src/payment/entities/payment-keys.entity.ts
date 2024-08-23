@@ -1,4 +1,8 @@
-import {Column, Entity, OneToOne, PrimaryGeneratedColumn, Unique} from 'typeorm'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm'
 
 @Entity('payment_key')
 export class PaymentKey {
