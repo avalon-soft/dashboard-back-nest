@@ -5,6 +5,8 @@ import {AuthGuard} from '../auth/auth.guard'
 import {TableDto} from './dto/table.dto'
 import {PageOptionsDto} from '../common/dtos/page-options.dto'
 import {PageDto} from '../common/dtos/page.dto'
+import {ChartDto} from './dto/chart.dto'
+import {StatisticDto} from './dto/statistic.dto'
 
 @ApiTags('Dashboard')
 @Controller({
@@ -30,6 +32,20 @@ export class DashboardController {
     @Query() pageOptionsDto: PageOptionsDto,
   ): Promise<PageDto<TableDto>> {
     return this.dashboardService.findAllTableData(pageOptionsDto);
+  }
+
+  @Get('statistic')
+  @UseGuards(AuthGuard)
+  @ApiCreatedResponse({ description: 'Get statistic data', type: StatisticDto })
+  getStatisticData(): StatisticDto {
+    return this.dashboardService.getStatisticData();
+  }
+
+  @Get('chart')
+  @UseGuards(AuthGuard)
+  @ApiCreatedResponse({ description: 'Get chart data', type: ChartDto })
+  getChartData(): ChartDto[] {
+    return this.dashboardService.getChartData();
   }
 
 }
