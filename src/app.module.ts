@@ -11,6 +11,7 @@ import { AppService } from './app.service';
 
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
+import { DashboardModule } from './dashboard/dashboard.module'
 // import { PaymentModule } from './payment/payment.module';
 // import { CertificateModule } from './certificate/certificate.module';
 
@@ -23,6 +24,7 @@ dotenv.config();
   imports: [
     AuthModule,
     UserModule,
+    DashboardModule,
     // PaymentModule,
     ConfigModule.forRoot({
       isGlobal: true

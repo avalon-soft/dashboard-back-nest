@@ -10,6 +10,7 @@ async function bootstrap() {
   });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({
+    transform: true,
     errorHttpStatusCode: 400,
     exceptionFactory: (errors) => {
       const errorResponse = {

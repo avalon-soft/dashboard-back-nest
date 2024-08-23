@@ -1,9 +1,9 @@
+import * as dotenv from 'dotenv';
+dotenv.config();
 import { DataSource } from 'typeorm';
 import { join } from 'path';
 import * as process from 'process'
-// import * as dotenv from 'dotenv';
 
-// dotenv.config();
 
 export const connectionSource = new DataSource({
   type: 'postgres',
