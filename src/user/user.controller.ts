@@ -8,12 +8,15 @@ import {
   Delete,
   UseGuards,
   HttpCode,
-} from '@nestjs/common'
-import { UserService } from './user.service';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '../auth/auth.guard';
-import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+} from '@nestjs/common';
+import {UserService} from './user.service';
+import {CreateUserDto} from './dto/create-user.dto';
+import {UpdateUserDto} from './dto/update-user.dto';
+import {AuthGuard} from '../auth/auth.guard';
+import {
+  ApiTags,
+  ApiCreatedResponse
+} from '@nestjs/swagger';
 
 @ApiTags('User')
 @Controller({

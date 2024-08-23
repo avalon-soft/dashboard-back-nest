@@ -7,11 +7,14 @@ import {
   UseGuards,
   Headers
 } from '@nestjs/common';
-import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
-import { MonoService } from './mono.service'
-import { CreatePaymentDto } from '../dto/create-payment.dto'
-import { CheckMonoPaymentDto } from '../dto/check-mono-payment.dto'
-import { AuthGuard } from '../../auth/auth.guard';
+import {
+  ApiTags,
+  ApiCreatedResponse
+} from '@nestjs/swagger';
+import {MonoService} from './mono.service';
+import {CreatePaymentDto} from '../dto/create-payment.dto';
+import {CheckMonoPaymentDto} from '../dto/check-mono-payment.dto';
+import {AuthGuard} from '../../auth/auth.guard';
 
 @ApiTags('Payment')
 @Controller({

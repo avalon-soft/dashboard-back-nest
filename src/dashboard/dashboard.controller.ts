@@ -1,12 +1,23 @@
-import {Controller, Get, UseGuards, Query, HttpStatus, HttpCode, Post} from '@nestjs/common'
-import {ApiCreatedResponse, ApiTags} from '@nestjs/swagger'
-import { DashboardService } from './dashboard.service'
-import {AuthGuard} from '../auth/auth.guard'
-import {TableDto} from './dto/table.dto'
-import {PageOptionsDto} from '../common/dtos/page-options.dto'
-import {PageDto} from '../common/dtos/page.dto'
-import {ChartDto} from './dto/chart.dto'
-import {StatisticDto} from './dto/statistic.dto'
+import {
+  Controller,
+  Get,
+  UseGuards,
+  Query,
+  HttpStatus,
+  HttpCode,
+  Post
+} from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiTags
+} from '@nestjs/swagger';
+import {DashboardService} from './dashboard.service';
+import {AuthGuard} from '../auth/auth.guard';
+import {TableDto} from './dto/table.dto';
+import {PageOptionsDto} from '../common/dtos/page-options.dto';
+import {PageDto} from '../common/dtos/page.dto';
+import {ChartDto} from './dto/chart.dto';
+import {StatisticDto} from './dto/statistic.dto';
 
 @ApiTags('Dashboard')
 @Controller({

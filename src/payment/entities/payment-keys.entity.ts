@@ -2,7 +2,7 @@ import {
   Column,
   Entity,
   PrimaryGeneratedColumn,
-} from 'typeorm'
+} from 'typeorm';
 
 @Entity('payment_key')
 export class PaymentKey {

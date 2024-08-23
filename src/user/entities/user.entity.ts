@@ -1,5 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import {Exclude} from 'class-transformer'
+import {
+  Column,
+  Entity,
+  PrimaryGeneratedColumn,
+  Unique
+} from 'typeorm';
+import {Exclude} from 'class-transformer';
 
 @Entity('user')
 export class User {

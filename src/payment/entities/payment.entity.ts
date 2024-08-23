@@ -3,8 +3,8 @@ import {
   Entity,
   OneToOne,
   PrimaryGeneratedColumn,
-} from 'typeorm'
-import {User} from '../../user/entities/user.entity'
+} from 'typeorm';
+import {User} from '../../user/entities/user.entity';
 
 @Entity('payment')
 export class Payment {

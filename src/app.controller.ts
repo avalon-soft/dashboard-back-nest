@@ -1,7 +1,7 @@
 import {
   Controller,
   Get,
-} from '@nestjs/common'
+} from '@nestjs/common';
 
 @Controller({
   path: 'v1',

@@ -1,8 +1,8 @@
 import {
   IsString,
   IsNumber,
-} from 'class-validator'
-import { ApiProperty } from '@nestjs/swagger';
+} from 'class-validator';
+import {ApiProperty} from '@nestjs/swagger';
 
 
 class StatisticDataDto {

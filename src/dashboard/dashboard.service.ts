@@ -1,5 +1,8 @@
-import {HttpStatus, Injectable} from '@nestjs/common'
-import { InjectRepository } from '@nestjs/typeorm';
+import {
+  HttpStatus,
+  Injectable
+} from '@nestjs/common'
+import {InjectRepository} from '@nestjs/typeorm';
 import {Table} from './entities/table.entity'
 import {Repository} from 'typeorm'
 import {PageOptionsDto} from '../common/dtos/page-options.dto'
@@ -8,7 +11,7 @@ import {TableDto} from './dto/table.dto'
 import {PageMetaDto} from '../common/dtos/page-meta.dto'
 import {ChartDto} from './dto/chart.dto'
 import {StatisticDto} from './dto/statistic.dto'
-import { faker } from '@faker-js/faker';
+import {faker} from '@faker-js/faker';
 
 @Injectable()
 export class DashboardService {

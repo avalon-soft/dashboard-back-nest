@@ -5,7 +5,7 @@ import {
   MinLength,
   IsEmail
 } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import {ApiProperty} from '@nestjs/swagger';
 
 const passwordRegEx = /.{8,20}$/;
 

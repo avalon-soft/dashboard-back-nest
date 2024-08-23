@@ -1,23 +1,21 @@
-import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
-import { ConfigModule } from '@nestjs/config';
-import * as process from 'process'
-import { ServeStaticModule } from '@nestjs/serve-static';
+import * as dotenv from 'dotenv';
+dotenv.config();
+import {Module} from '@nestjs/common';
+import {TypeOrmModule} from '@nestjs/typeorm';
+import {DataSource} from 'typeorm';
+import {ConfigModule} from '@nestjs/config';
+import * as process from 'process';
+import {join} from 'path';
+import {ServeStaticModule} from '@nestjs/serve-static';
 
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import {AppController} from './app.controller';
+import {AppService} from './app.service';
 
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
-import { DashboardModule } from './dashboard/dashboard.module'
+import {AuthModule} from './auth/auth.module';
+import {UserModule} from './user/user.module';
+import {DashboardModule} from './dashboard/dashboard.module'
 // import { PaymentModule } from './payment/payment.module';
 // import { CertificateModule } from './certificate/certificate.module';
-
-import { join } from 'path';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
 
 @Module({
   imports: [
