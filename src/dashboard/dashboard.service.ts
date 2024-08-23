@@ -28,10 +28,10 @@ export class DashboardService {
   async findAllTableData(
     pageOptionsDto: PageOptionsDto,
   ): Promise<PageDto<TableDto>> {
-    const queryBuilder = this.tableRepository.createQueryBuilder("table");
+    const queryBuilder = this.tableRepository.createQueryBuilder('table');
 
     queryBuilder
-      .orderBy("id", pageOptionsDto.order)
+      .orderBy('id', pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.size);
 

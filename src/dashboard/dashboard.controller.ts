@@ -14,7 +14,7 @@ import {PageDto} from '../common/dtos/page.dto'
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  @Post('/table')
+  @Post('table')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Create fake table data - new 10 items', type: TableDto })
@@ -22,7 +22,7 @@ export class DashboardController {
     return this.dashboardService.createTableData()
   }
 
-  @Get('/table')
+  @Get('table')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Get table data', type: TableDto })

@@ -13,28 +13,28 @@ import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiCreatedResponse({ description: 'Create a new user', type: CreateUserDto })
   @Post()
+  @ApiCreatedResponse({ description: 'Create a new user', type: CreateUserDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
-  @ApiCreatedResponse({ description: 'Get all list of users' })
-  @UseGuards(AuthGuard)
   @Get()
+  @UseGuards(AuthGuard)
+  @ApiCreatedResponse({ description: 'Get all list of users' })
   findAll() {
     return this.userService.findAll();
   }
 
-  @ApiCreatedResponse({ description: 'Change user by id' })
   @Patch(':id')
+  @ApiCreatedResponse({ description: 'Change user by id' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
-  @ApiCreatedResponse({ description: 'Delete user by id' })
   @Delete(':id')
   @HttpCode(204)
+  @ApiCreatedResponse({ description: 'Delete user by id' })
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
