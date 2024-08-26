@@ -18,6 +18,7 @@ import {PageOptionsDto} from '../common/dtos/page-options.dto';
 import {PageDto} from '../common/dtos/page.dto';
 import {ChartDto} from './dto/chart.dto';
 import {StatisticDto} from './dto/statistic.dto';
+import {TableOptionsDto} from './dto/table-options.dto';
 
 @ApiTags('Dashboard')
 @Controller({
@@ -36,11 +37,11 @@ export class DashboardController {
   }
 
   @Get('table')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Get table data', type: TableDto })
   async getTableData(
-    @Query() pageOptionsDto: PageOptionsDto,
+    @Query() pageOptionsDto: TableOptionsDto,
   ): Promise<PageDto<TableDto>> {
     return this.dashboardService.findAllTableData(pageOptionsDto);
   }

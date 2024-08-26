@@ -3,15 +3,16 @@ import {
   Injectable
 } from '@nestjs/common'
 import {InjectRepository} from '@nestjs/typeorm';
-import {Table} from './entities/table.entity'
-import {Repository} from 'typeorm'
-import {PageOptionsDto} from '../common/dtos/page-options.dto'
-import {PageDto} from '../common/dtos/page.dto'
-import {TableDto} from './dto/table.dto'
-import {PageMetaDto} from '../common/dtos/page-meta.dto'
-import {ChartDto} from './dto/chart.dto'
-import {StatisticDto} from './dto/statistic.dto'
+import {Table} from './entities/table.entity';
+import {Repository} from 'typeorm';
+import {PageOptionsDto} from '../common/dtos/page-options.dto';
+import {PageDto} from '../common/dtos/page.dto';
+import {TableDto} from './dto/table.dto';
+import {PageMetaDto} from '../common/dtos/page-meta.dto';
+import {ChartDto} from './dto/chart.dto';
+import {StatisticDto} from './dto/statistic.dto';
 import {faker} from '@faker-js/faker';
+import {TableOptionsDto} from './dto/table-options.dto';
 
 @Injectable()
 export class DashboardService {
@@ -31,15 +32,18 @@ export class DashboardService {
   }
 
   async findAllTableData(
-    pageOptionsDto: PageOptionsDto,
+    pageOptionsDto: TableOptionsDto,
   ): Promise<PageDto<TableDto>> {
     const queryBuilder = this.tableRepository.createQueryBuilder('table');
 
     queryBuilder
-      // .orderBy('id', pageOptionsDto.order) // add orderBy=''
       .orderBy(pageOptionsDto.orderBy, pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.size);
+
+    if (pageOptionsDto.status) queryBuilder.andWhere('status = :status', { status: pageOptionsDto.status })
+    if (pageOptionsDto.name) queryBuilder.andWhere('name = :name', { name: pageOptionsDto.name })
+
 
     const itemCount = await queryBuilder.getCount();
     const { entities } = await queryBuilder.getRawAndEntities();
