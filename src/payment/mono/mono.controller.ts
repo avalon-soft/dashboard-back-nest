@@ -24,18 +24,18 @@ import {AuthGuard} from '../../auth/auth.guard';
 export class MonoController {
   constructor(private monoService: MonoService) {}
 
-  @UseGuards(AuthGuard)
-  @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
-  @HttpCode(HttpStatus.OK)
   @Post('invoice')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
   createPayment(@Body() payment: CreatePaymentDto) {
     return this.monoService.create(payment);
   }
 
-  @UseGuards(AuthGuard)
-  @ApiCreatedResponse({ description: 'Mono payment - Check invoice' })
-  @HttpCode(HttpStatus.OK)
   @Post('check')
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiCreatedResponse({ description: 'Mono payment - Check invoice' })
   checkPayment(@Headers() headers:any, @Body() invoice: CheckMonoPaymentDto) {
     return this.monoService.check(invoice, headers);
   }

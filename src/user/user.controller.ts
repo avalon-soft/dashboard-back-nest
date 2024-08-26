@@ -29,17 +29,18 @@ import {User} from './entities/user.entity';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @ApiCreatedResponse({ description: 'Get me info' })
   @Get('me')
   @UseGuards(AuthGuard)
   @SerializeOptions({
     excludeExtraneousValues: true,
   })
+  @ApiCreatedResponse({ description: 'Get me info' })
   getProfile(@Request() req: { user: { id: number }}):Promise<User> {
     return this.userService.getMeInfo(req.user);
   }
 
   @Post()
+  @UseGuards(AuthGuard)
   @ApiCreatedResponse({ description: 'Create a new user', type: CreateUserDto })
   create(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
@@ -53,12 +54,14 @@ export class UserController {
   }
 
   @Patch(':id')
+  @UseGuards(AuthGuard)
   @ApiCreatedResponse({ description: 'Change user by id' })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @UseGuards(AuthGuard)
   @HttpCode(204)
   @ApiCreatedResponse({ description: 'Delete user by id' })
   remove(@Param('id') id: string) {
