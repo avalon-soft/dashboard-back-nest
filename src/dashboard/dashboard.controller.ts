@@ -8,9 +8,10 @@ import {
   Post
 } from '@nestjs/common';
 import {
-  ApiCreatedResponse,
-  ApiTags
-} from '@nestjs/swagger';
+  ApiBody,
+  ApiCreatedResponse, ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger'
 import {DashboardService} from './dashboard.service';
 import {AuthGuard} from '../auth/auth.guard';
 import {TableDto} from './dto/table.dto';
@@ -40,6 +41,7 @@ export class DashboardController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Get table data', type: TableDto })
+  @ApiBody({ type: TableOptionsDto})
   async getTableData(
     @Query() pageOptionsDto: TableOptionsDto,
   ): Promise<PageDto<TableDto>> {

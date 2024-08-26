@@ -1,5 +1,5 @@
 import {PageOptionsDto} from '../../common/dtos/page-options.dto';
-import {ApiPropertyOptional} from '@nestjs/swagger';
+import {ApiPropertyOptional} from '@nestjs/swagger'
 import {
   IsString,
   IsOptional
