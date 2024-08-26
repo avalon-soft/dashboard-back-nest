@@ -41,7 +41,7 @@ export class DashboardController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Get table data', type: TableDto })
-  @ApiBody({ type: TableOptionsDto})
+  @ApiBody({ type: TableOptionsDto, required: false })
   async getTableData(
     @Query() pageOptionsDto: TableOptionsDto,
   ): Promise<PageDto<TableDto>> {
