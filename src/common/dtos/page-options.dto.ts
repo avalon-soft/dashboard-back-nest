@@ -4,9 +4,10 @@ import {
   IsEnum,
   IsInt,
   IsOptional,
+  IsString,
   Max,
-  Min
-} from 'class-validator';
+  Min,
+} from 'class-validator'
 import {Order} from '../constants';
 
 export class PageOptionsDto {
@@ -14,6 +15,11 @@ export class PageOptionsDto {
   @IsEnum(Order)
   @IsOptional()
   readonly order?: Order = Order.ASC;
+
+  @ApiPropertyOptional({ default: 'id' })
+  @IsOptional()
+  @IsString()
+  readonly orderBy?: string = 'id';
 
   @ApiPropertyOptional({
     minimum: 1,

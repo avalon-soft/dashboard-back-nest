@@ -36,7 +36,8 @@ export class DashboardService {
     const queryBuilder = this.tableRepository.createQueryBuilder('table');
 
     queryBuilder
-      .orderBy('id', pageOptionsDto.order)
+      // .orderBy('id', pageOptionsDto.order) // add orderBy=''
+      .orderBy(pageOptionsDto.orderBy, pageOptionsDto.order)
       .skip(pageOptionsDto.skip)
       .take(pageOptionsDto.size);
 
