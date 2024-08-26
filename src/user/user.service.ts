@@ -15,6 +15,11 @@ export class UserService {
     @InjectRepository(User) private readonly userRepository: Repository<User>,
   ) {}
 
+
+  async getMeInfo(user: { id: number }): Promise<User> {
+    return await this.userRepository.findOneBy({ id: user.id });
+  }
+
   async create(createUserDto: CreateUserDto) {
     const existingUser = await this.userRepository.findOne({ where: { username: createUserDto.email } });
     if (existingUser) {

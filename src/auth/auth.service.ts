@@ -9,8 +9,9 @@ import { JwtService } from '@nestjs/jwt';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { Auth } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
-import {Repository} from 'typeorm'
-import {Request} from 'express'
+import {Repository} from 'typeorm';
+import {Request} from 'express';
+import {UserDto} from '../user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -42,12 +43,12 @@ export class AuthService {
 
   }
 
-  async getMeInfo(user: any): Promise<{}> {
-    // TODO: сделать норм сериалайзер
-    const userFullInfo = await this.userService.findOne(user.username);
-    delete userFullInfo.password
-    return userFullInfo
-  }
+  // async getMeInfo(user: any): Promise<{}> {
+  //   // TODO: сделать норм сериалайзер
+  //   const userFullInfo = await this.userService.findOne(user.username);
+  //   delete userFullInfo.password
+  //   return userFullInfo
+  // }
 
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];

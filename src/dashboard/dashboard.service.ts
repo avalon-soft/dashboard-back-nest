@@ -5,7 +5,6 @@ import {
 import {InjectRepository} from '@nestjs/typeorm';
 import {Table} from './entities/table.entity';
 import {Repository} from 'typeorm';
-import {PageOptionsDto} from '../common/dtos/page-options.dto';
 import {PageDto} from '../common/dtos/page.dto';
 import {TableDto} from './dto/table.dto';
 import {PageMetaDto} from '../common/dtos/page-meta.dto';

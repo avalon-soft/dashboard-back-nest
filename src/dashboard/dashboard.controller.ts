@@ -37,7 +37,7 @@ export class DashboardController {
   }
 
   @Get('table')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Get table data', type: TableDto })
   async getTableData(

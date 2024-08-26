@@ -1,14 +1,11 @@
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
+import {Model} from '../../common/entities/model.entity';
 
 @Entity('dashboard_table')
-export class Table {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Table extends Model {
   @Column({ type: 'varchar', length: 200 })
   name: string;
 

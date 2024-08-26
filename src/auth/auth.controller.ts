@@ -29,10 +29,10 @@ export class AuthController {
     return this.authService.signIn(signIn);
   }
 
-  @ApiCreatedResponse({ description: 'Get me info' })
-  @Get('me')
-  @UseGuards(AuthGuard)
-  getProfile(@Request() req:any) {
-    return this.authService.getMeInfo(req.user);
-  }
+  // @ApiCreatedResponse({ description: 'Get me info' })
+  // @Get('me')
+  // @UseGuards(AuthGuard)
+  // getProfile(@Request() req:any) {
+  //   return this.authService.getMeInfo(req.user);
+  // }
 }

@@ -1,16 +1,12 @@
 import {
   Column,
   Entity,
-  PrimaryGeneratedColumn,
-  Unique
+  Unique,
 } from 'typeorm';
-import {Exclude} from 'class-transformer';
+import {Model} from '../../common/entities/model.entity';
 
 @Entity('user')
-export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class User extends Model {
   @Column({ type: 'varchar', length: 30 })
   name: string;
 
@@ -18,11 +14,14 @@ export class User {
   @Unique('username', ['username'])
   username: string;
 
-  @Column({ type: 'varchar' })
-  @Exclude()
+  @Column({
+    type: 'varchar',
+    select: false
+  })
   password: string;
 
   constructor(partial: Partial<User>) {
+    super()
     Object.assign(this, partial);
   }
 }

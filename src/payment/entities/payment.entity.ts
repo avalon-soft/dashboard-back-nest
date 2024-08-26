@@ -2,15 +2,12 @@ import {
   Column,
   Entity,
   OneToOne,
-  PrimaryGeneratedColumn,
 } from 'typeorm';
 import {User} from '../../user/entities/user.entity';
+import {Model} from '../../common/entities/model.entity';
 
 @Entity('payment')
-export class Payment {
-  @PrimaryGeneratedColumn()
-  id: number;
-
+export class Payment extends Model {
   @Column({ type: 'integer' })
   amount: number;
 

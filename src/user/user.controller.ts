@@ -8,7 +8,9 @@ import {
   Delete,
   UseGuards,
   HttpCode,
-} from '@nestjs/common';
+  Request,
+  SerializeOptions,
+} from '@nestjs/common'
 import {UserService} from './user.service';
 import {CreateUserDto} from './dto/create-user.dto';
 import {UpdateUserDto} from './dto/update-user.dto';
@@ -17,6 +19,7 @@ import {
   ApiTags,
   ApiCreatedResponse
 } from '@nestjs/swagger';
+import {User} from './entities/user.entity';
 
 @ApiTags('User')
 @Controller({
@@ -25,6 +28,16 @@ import {
 })
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @ApiCreatedResponse({ description: 'Get me info' })
+  @Get('me')
+  @UseGuards(AuthGuard)
+  @SerializeOptions({
+    excludeExtraneousValues: true,
+  })
+  getProfile(@Request() req: { user: { id: number }}):Promise<User> {
+    return this.userService.getMeInfo(req.user);
+  }
 
   @Post()
   @ApiCreatedResponse({ description: 'Create a new user', type: CreateUserDto })
