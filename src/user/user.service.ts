@@ -3,7 +3,10 @@ import {
   Injectable
 } from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import {
+  Repository,
+  SelectQueryBuilder
+} from 'typeorm';
 import {CreateUserDto} from './dto/create-user.dto';
 import {UpdateUserDto} from './dto/update-user.dto';
 import {User} from './entities/user.entity';
@@ -55,6 +58,15 @@ export class UserService {
 
   findOne(username: string): Promise<User> {
     return this.userRepository.findOneBy({ username });
+  }
+
+  async findOneAuth(username: string): Promise<User> {
+    return await this.userRepository.createQueryBuilder('user')
+      .select(['id', 'username', 'password'])
+      .where({
+        username: username
+      })
+      .getRawOne()
   }
 
   update(id: number, updateUserDto: UpdateUserDto): Promise<User> {

@@ -11,7 +11,6 @@ import { Auth } from './entities/auth.entity';
 import * as bcrypt from 'bcrypt';
 import {Repository} from 'typeorm';
 import {Request} from 'express';
-import {UserDto} from '../user/dto/user.dto';
 
 @Injectable()
 export class AuthService {
@@ -21,8 +20,8 @@ export class AuthService {
     @InjectRepository(Auth) private readonly authRepository: Repository<Auth>,
   ) {}
 
-  async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string } | { error: string}> {
-    const user = await this.userService.findOne(createAuthDto.email);
+  async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string } | { error: string }> {
+    const user = await this.userService.findOneAuth(createAuthDto.email);
 
     if (user) {
       const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
@@ -42,13 +41,6 @@ export class AuthService {
     throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
   }
-
-  // async getMeInfo(user: any): Promise<{}> {
-  //   // TODO: сделать норм сериалайзер
-  //   const userFullInfo = await this.userService.findOne(user.username);
-  //   delete userFullInfo.password
-  //   return userFullInfo
-  // }
 
   private extractTokenFromHeader(request: Request): string | undefined {
     const [type, token] = request.headers.authorization?.split(' ') ?? [];
