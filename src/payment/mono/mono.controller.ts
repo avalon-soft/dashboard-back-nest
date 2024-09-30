@@ -25,7 +25,7 @@ export class MonoController {
   constructor(private monoService: MonoService) {}
 
   @Post('invoice')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
   createPayment(@Body() payment: CreatePaymentDto) {
@@ -33,11 +33,11 @@ export class MonoController {
   }
 
   @Post('check')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Check invoice' })
   checkPayment(@Headers() headers:any, @Body() invoice: CheckMonoPaymentDto) {
-    return this.monoService.check(invoice, headers);
+    return this.monoService.check(headers, invoice);
   }
 
 }

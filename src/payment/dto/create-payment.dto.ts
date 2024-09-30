@@ -12,10 +12,10 @@ export class CreatePaymentDto {
   @Min(0)
   amount: number;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   invoiceId: string;
 
-  @IsNotEmpty()
+  // @IsNotEmpty()
   payment_provider: string;
 
 }
