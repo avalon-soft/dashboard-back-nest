@@ -23,6 +23,7 @@ export class PaymentCreate1724159126834 implements MigrationInterface {
             }, {
               name: 'invoiceId',
               type: 'varchar',
+              // isNullable: true,
               length: '100'
             }, {
               name: 'payment_provider',

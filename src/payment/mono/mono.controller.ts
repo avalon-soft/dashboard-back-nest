@@ -5,8 +5,8 @@ import {
   HttpStatus,
   Post,
   UseGuards,
-  Headers
-} from '@nestjs/common';
+  Headers, Request,
+} from '@nestjs/common'
 import {
   ApiTags,
   ApiCreatedResponse
@@ -25,15 +25,15 @@ export class MonoController {
   constructor(private monoService: MonoService) {}
 
   @Post('invoice')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
-  createPayment(@Body() payment: CreatePaymentDto) {
-    return this.monoService.create(payment);
+  createPayment(@Request() req: { user: { id: number }}, @Body() payment: CreatePaymentDto) {
+    return this.monoService.create(req.user, payment);
   }
 
   @Post('check')
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Check invoice' })
   checkPayment(@Headers() headers:any, @Body() invoice: CheckMonoPaymentDto) {

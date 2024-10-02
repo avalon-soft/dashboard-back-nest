@@ -3,7 +3,7 @@ dotenv.config();
 import {Module} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {DataSource} from 'typeorm';
-import {ConfigModule} from '@nestjs/config';
+import {ConfigModule, ConfigService} from '@nestjs/config';
 import * as process from 'process';
 import {join} from 'path';
 import {ServeStaticModule} from '@nestjs/serve-static';
@@ -14,15 +14,18 @@ import {AppService} from './app.service';
 import {AuthModule} from './auth/auth.module';
 import {UserModule} from './user/user.module';
 import {DashboardModule} from './dashboard/dashboard.module'
-// import { PaymentModule } from './payment/payment.module';
+import { PaymentModule } from './payment/payment.module';
 // import { CertificateModule } from './certificate/certificate.module';
+
+
+// console.log(ConfigService.get('DB_USER'))
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     DashboardModule,
-    // PaymentModule,
+    PaymentModule,
     ConfigModule.forRoot({
       isGlobal: true
     }),

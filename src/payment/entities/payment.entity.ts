@@ -21,4 +21,8 @@ export class Payment extends Model {
   @OneToOne(type => User, user => user.id)
   userId: number;
 
+  // constructor(partial: Partial<User>) {
+  //   super()
+  //   Object.assign(this, partial);
+  // }
 }

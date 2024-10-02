@@ -1,9 +1,9 @@
 import {
   IsNotEmpty,
   IsInt,
-  Min
+  Min,
 } from 'class-validator';
-import {ApiProperty} from '@nestjs/swagger';
+import {ApiProperty, ApiResponseProperty} from '@nestjs/swagger'
 
 export class CreatePaymentDto {
   @IsNotEmpty()
@@ -12,7 +12,9 @@ export class CreatePaymentDto {
   @Min(0)
   amount: number;
 
-  // @IsNotEmpty()
+  @ApiResponseProperty()
+  pageUrl: string
+
   invoiceId: string;
 
   // @IsNotEmpty()

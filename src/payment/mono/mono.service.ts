@@ -1,4 +1,4 @@
-import {Injectable,} from '@nestjs/common';
+import {HttpException, HttpStatus, Injectable} from '@nestjs/common'
 import {CreatePaymentDto} from '../dto/create-payment.dto';
 import {CheckMonoPaymentDto} from '../dto/check-mono-payment.dto';
 
@@ -19,7 +19,7 @@ export class MonoService {
     private readonly httpService: HttpService
   ) {}
 
-  async create(payment: CreatePaymentDto): Promise<{}> {
+  async create(user: { id: number }, payment: CreatePaymentDto): Promise<{}> {
 
     const invoiceData = {
       "amount": payment.amount*100,
@@ -49,61 +49,44 @@ export class MonoService {
       "redirectUrl": "https://dashboard.disoft.dev/payment_result",
       "webHookUrl": "https://dashboard.disoft.dev/api/v1/payment/mono/invoice/check",
       "validity": 3600,
-      "paymentType": "debit",
-      "qrId": "XJ_DiM4rTd5V",
-      "code": "0a8637b3bccb42aa93fdeb791b8b58e9",
+      "paymentType": "debit"
     }
 
-    const paymentRecord = this.paymentRepository.create({
+    const paymentRecord = await this.paymentRepository.save({
       amount: payment.amount,
       invoiceId: null,
       payment_provider: 'MONO',
-      userId: 1,
+      userId: user.id,
     })
-    console.log(paymentRecord)
 
     invoiceData.merchantPaymInfo.reference = String(paymentRecord.id)
 
-    const options = {
-      data: invoiceData,
-      headers: {
-        'X-Token': process.env.PAYMENT_MONO_TOKEN
+    try {
+      const result = await this.httpService.axiosRef
+        .post(`${ process.env.PAYMENT_MONO_API}api/merchant/invoice/create`, invoiceData, {
+          headers: {
+            'X-Token': process.env.PAYMENT_MONO_TOKEN
+          }
+        })
+
+      if(result.data.invoiceId) {
+        const t = await this.paymentRepository.findOneBy({
+          id: paymentRecord.id
+        });
+
+        await this.paymentRepository.update(paymentRecord.id, {
+          invoiceId: result.data.invoiceId
+        });
       }
+
+      return {
+        amount: payment.amount,
+        pageUrl: result.data.pageUrl
+      }
+    } catch (e) {
+      console.log(e)
+      throw new HttpException(e, HttpStatus.BAD_REQUEST);
     }
-
-    const result = await this.httpService.axiosRef
-      .post(`${ process.env.PAYMENT_MONO_API}api/merchant/invoice/create`, options)
-    //   .then(response => {
-    //     // const paymentUpdate: Payment = new Payment({
-    //     //   id: paymentRecord.id,
-    //     //   invoiceId: response.data.id
-    //     // });
-    //
-    //     this.paymentRepository.update(paymentRecord.id, {
-    //       invoiceId: response.data.id
-    //     });
-    //
-    //     return response.data
-    // })
-    console.log(result)
-
-    // this.paymentRepository.update(paymentRecord.id, {
-    //   invoiceId: response.data.id
-    // });
-
-    // this.paymentKeyRepository.create({
-        //   payment_provider: 'mono',
-        //   key: res.data.key,
-        // })
-        //
-        // return res.data.key
-      //    await Payment.update({
-        //             invoiceId: result.data.invoiceId
-        //           }, {
-        //             where: { id: paymentRecord.id },
-        //           })
-      // })
-    return result
   }
 
   async check(headers:any, invoice: CheckMonoPaymentDto): Promise<{}> {
