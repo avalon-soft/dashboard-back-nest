@@ -20,6 +20,12 @@ export class MonoService {
     private readonly httpService: HttpService
   ) {}
 
+  async findAllByUser(user: { id: number }): Promise<{}> {
+    return this.paymentRepository.findOneBy({
+      userId: user.id
+    })
+  }
+
   async create(user: { id: number }, payment: CreatePaymentDto): Promise<{}> {
 
     const invoiceData = {
@@ -115,8 +121,6 @@ export class MonoService {
     return true
   }
 
-
-
   private async checkSign(headers:any, body: CheckMonoPaymentDto): Promise<{}> {
     const xSignBase64 = headers['X-Sign']
 
@@ -156,7 +160,6 @@ export class MonoService {
       return false
     }
   }
-
 
   private async getPubKey(): Promise<string> {
     const options = {

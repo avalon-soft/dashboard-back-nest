@@ -4,6 +4,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Get,
   UseGuards,
   Headers, Request,
 } from '@nestjs/common'
@@ -14,6 +15,7 @@ import {
 import {MonoService} from './mono.service';
 import {CreatePaymentDto} from '../dto/create-payment.dto';
 import {CheckMonoPaymentDto} from '../dto/check-mono-payment.dto';
+import {PaymentsListDto} from '../dto/payments.dto';
 import {AuthGuard} from '../../auth/auth.guard';
 
 @ApiTags('Payment')
@@ -23,6 +25,14 @@ import {AuthGuard} from '../../auth/auth.guard';
 })
 export class MonoController {
   constructor(private monoService: MonoService) {}
+
+  @Get()
+  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.OK)
+  @ApiCreatedResponse({ description: 'Mono payment - Get all list of my payments', type: PaymentsListDto })
+  findAll(@Request() req: { user: { id: number }}) {
+    return this.monoService.findAllByUser(req.user);
+  }
 
   @Post('invoice')
   @UseGuards(AuthGuard)
