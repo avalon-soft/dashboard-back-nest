@@ -8,7 +8,8 @@ import {PaymentKey} from '../entities/payment-keys.entity';
 import {Column, OneToOne, Repository} from 'typeorm'
 import * as process from 'process';
 import {HttpService} from '@nestjs/axios';
-import crypto from 'crypto'
+// import crypto from 'crypto'
+const crypto = require('crypto')
 import {User} from '../../user/entities/user.entity'
 
 @Injectable()
@@ -91,34 +92,53 @@ export class MonoService {
 
   async check(headers:any, invoice: CheckMonoPaymentDto): Promise<{}> {
 
-    const isSignOK = await this.checkSign(headers, invoice)
+    const payment = await this.paymentRepository.findOneBy({
+      invoiceId: invoice.invoiceId
+    });
 
-    return {}
+    const isDateOK = await this.checkDateModified(payment, invoice)
+
+    const isSignOK = isDateOK ? await this.checkSign(headers, invoice) : false
+
+    if (isSignOK) {
+      //
+    }
+
+    return {detail: 'Endpoint dont finished'}
   }
 
+  private async checkDateModified(payment: { invoiceId: string }, body: CheckMonoPaymentDto): Promise<{}> {
+
+
+   //  TODO: add updatedAt to payment entity
+   // return new Date(body.modifiedDate).getTime() > new Date(payment.updatedAt).getTime()
+    return true
+  }
+
+
+
   private async checkSign(headers:any, body: CheckMonoPaymentDto): Promise<{}> {
-    // console.log(111, headers)
     const xSignBase64 = headers['X-Sign']
-    // console.log(xSignBase64)
+
     const message = JSON.stringify(body)
 
     let pubKeyBase64 = ''
     try {
-      // console.log(1)
       const existKey = await this.paymentKeyRepository.findOne({
         where: {
           payment_provider: 'mono'
         }
       })
-      pubKeyBase64 = existKey[0].key
+      pubKeyBase64 = existKey.key
     } catch (e) {
-      // console.log(2)
+      console.log(e)
       pubKeyBase64 = await this.getPubKey()
     }
-    // console.log(pubKeyBase64)
 
     let signatureBuf = Buffer.from(String(xSignBase64), 'base64');
     let publicKeyBuf = Buffer.from(String(pubKeyBase64), 'base64');
+    // console.log(signatureBuf)
+    // console.log(publicKeyBuf)
 
     try {
       let verify = crypto.createVerify('SHA256')
@@ -149,7 +169,7 @@ export class MonoService {
     return this.httpService.axiosRef
       .get(`${process.env.PAYMENT_MONO_API}api/merchant/pubkey`, options)
       .then((res) => {
-        this.paymentKeyRepository.create({
+        this.paymentKeyRepository.save({
           payment_provider: 'mono',
           key: res.data.key,
         })

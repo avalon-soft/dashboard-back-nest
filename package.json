@@ -39,7 +39,6 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cross-var": "^1.1.0",
-    "crypto": "^1.0.1",
     "docxtemplater": "^3.49.1",
     "dotenv": "^16.4.5",
     "pg": "^8.12.0",

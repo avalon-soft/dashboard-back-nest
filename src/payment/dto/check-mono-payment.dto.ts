@@ -18,4 +18,6 @@ export class CheckMonoPaymentDto {
   // @IsNotEmpty()
   ccy: string;
 
+  modifiedDate: string;
+
 }
