@@ -17,6 +17,9 @@ export class Payment extends Model {
   @Column({ type: 'varchar', length: 100 })
   payment_provider: string;
 
+  @Column({ type: 'int', default: 980 })
+  currency: number;
+
   @Column({ type: 'int' })
   @OneToOne(type => User, user => user.id)
   userId: number;

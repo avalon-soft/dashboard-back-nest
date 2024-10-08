@@ -28,11 +28,9 @@ export class MonoService {
 
   async create(user: { sub: number }, payment: CreatePaymentDto): Promise<{}> {
 
-    console.log(user.sub)
-
     const invoiceData = {
       "amount": payment.amount*100,
-      "ccy": 980,
+      "ccy": payment.currency,
       "merchantPaymInfo": {
         "reference": "1",
         "destination": "Test payment",
@@ -61,11 +59,14 @@ export class MonoService {
       "paymentType": "debit"
     }
 
+    console.log(payment.currency)
+
     const paymentRecord = await this.paymentRepository.save({
       amount: payment.amount,
       invoiceId: null,
       payment_provider: 'MONO',
-      userId: user.sub,
+      currency: payment.currency,
+      userId: 1,
     })
 
     invoiceData.merchantPaymInfo.reference = String(paymentRecord.id)
@@ -90,6 +91,7 @@ export class MonoService {
 
       return {
         amount: payment.amount,
+        currency: payment.currency,
         pageUrl: result.data.pageUrl
       }
     } catch (e) {

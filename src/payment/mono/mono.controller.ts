@@ -35,11 +35,10 @@ export class MonoController {
   }
 
   @Post('invoice')
-  @UseGuards(AuthGuard)
+  // @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
   createPayment(@Request() req: { user: { sub: number }}, @Body() payment: CreatePaymentDto) {
-    console.log(req.user)
     return this.monoService.create(req.user, payment);
   }
 

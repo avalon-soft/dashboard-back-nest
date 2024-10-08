@@ -12,6 +12,11 @@ export class CreatePaymentDto {
   @Min(0)
   amount: number;
 
+  @IsNotEmpty()
+  @ApiProperty()
+  @IsInt()
+  currency: number;
+
   @ApiResponseProperty()
   pageUrl: string
 
