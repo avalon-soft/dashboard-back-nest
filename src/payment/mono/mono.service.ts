@@ -5,12 +5,10 @@ import {CheckMonoPaymentDto} from '../dto/check-mono-payment.dto';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Payment} from '../entities/payment.entity';
 import {PaymentKey} from '../entities/payment-keys.entity';
-import {Column, OneToOne, Repository} from 'typeorm'
+import {Repository} from 'typeorm'
 import * as process from 'process';
 import {HttpService} from '@nestjs/axios';
-// import crypto from 'crypto'
 const crypto = require('crypto')
-import {User} from '../../user/entities/user.entity'
 
 @Injectable()
 export class MonoService {
@@ -59,14 +57,12 @@ export class MonoService {
       "paymentType": "debit"
     }
 
-    console.log(payment.currency)
-
     const paymentRecord = await this.paymentRepository.save({
       amount: payment.amount,
       invoiceId: null,
       payment_provider: 'MONO',
       currency: payment.currency,
-      userId: 1,
+      userId: user.sub,
     })
 
     invoiceData.merchantPaymInfo.reference = String(paymentRecord.id)
