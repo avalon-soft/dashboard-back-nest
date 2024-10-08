@@ -51,8 +51,8 @@ export class MonoService {
           }
         ]
       },
-      "redirectUrl": "https://dashboard.disoft.dev/payment_result",
-      "webHookUrl": "https://dashboard.disoft.dev/api/v1/payment/mono/invoice/check",
+      "redirectUrl": `${process.env.DOMAIN}/payment?success`,
+      "webHookUrl": `${process.env.DOMAIN}/api/v1/payment/mono/invoice/check`,
       "validity": 3600,
       "paymentType": "debit"
     }
