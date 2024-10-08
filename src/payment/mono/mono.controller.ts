@@ -26,11 +26,11 @@ import {AuthGuard} from '../../auth/auth.guard';
 export class MonoController {
   constructor(private monoService: MonoService) {}
 
-  @Get()
+  @Get('/my')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Get all list of my payments', type: PaymentsListDto })
-  findAll(@Request() req: { user: { id: number }}) {
+  findAll(@Request() req: { user: { sub: number }}) {
     return this.monoService.findAllByUser(req.user);
   }
 
@@ -38,7 +38,8 @@ export class MonoController {
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Create invoice', type: CreatePaymentDto })
-  createPayment(@Request() req: { user: { id: number }}, @Body() payment: CreatePaymentDto) {
+  createPayment(@Request() req: { user: { sub: number }}, @Body() payment: CreatePaymentDto) {
+    console.log(req.user)
     return this.monoService.create(req.user, payment);
   }
 

@@ -20,13 +20,15 @@ export class MonoService {
     private readonly httpService: HttpService
   ) {}
 
-  async findAllByUser(user: { id: number }): Promise<{}> {
+  async findAllByUser(user: { sub: number }): Promise<{}> {
     return this.paymentRepository.findOneBy({
-      userId: user.id
+      userId: user.sub
     })
   }
 
-  async create(user: { id: number }, payment: CreatePaymentDto): Promise<{}> {
+  async create(user: { sub: number }, payment: CreatePaymentDto): Promise<{}> {
+
+    console.log(user.sub)
 
     const invoiceData = {
       "amount": payment.amount*100,
@@ -63,7 +65,7 @@ export class MonoService {
       amount: payment.amount,
       invoiceId: null,
       payment_provider: 'MONO',
-      userId: user.id,
+      userId: user.sub,
     })
 
     invoiceData.merchantPaymInfo.reference = String(paymentRecord.id)
