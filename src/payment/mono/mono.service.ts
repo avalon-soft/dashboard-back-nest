@@ -21,7 +21,7 @@ export class MonoService {
   ) {}
 
   async findAllByUser(user: { sub: number }): Promise<{}> {
-    return this.paymentRepository.findOneBy({
+    return this.paymentRepository.findBy({
       userId: user.sub
     })
   }

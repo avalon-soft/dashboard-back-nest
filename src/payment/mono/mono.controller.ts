@@ -26,7 +26,7 @@ import {AuthGuard} from '../../auth/auth.guard';
 export class MonoController {
   constructor(private monoService: MonoService) {}
 
-  @Get('/my')
+  @Get('my')
   @UseGuards(AuthGuard)
   @HttpCode(HttpStatus.OK)
   @ApiCreatedResponse({ description: 'Mono payment - Get all list of my payments', type: PaymentsListDto })
