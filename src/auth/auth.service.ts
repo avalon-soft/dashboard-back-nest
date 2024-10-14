@@ -21,24 +21,29 @@ export class AuthService {
   ) {}
 
   async signIn(createAuthDto: CreateAuthDto): Promise<{ access_token: string } | { error: string }> {
-    const user = await this.userService.findOneAuth(createAuthDto.email);
+    try {
+      const user = await this.userService.findOneAuth(createAuthDto.email);
 
-    if (user) {
-      const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
-      if (!isMatch) {
-        throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
+      if (user) {
+        const isMatch = await bcrypt.compare(createAuthDto.password, user?.password);
+        if (!isMatch) {
+          throw new HttpException('Incorrect password', HttpStatus.BAD_REQUEST);
+        }
+
+        const payload = { sub: user.id, username: user.username };
+        const token = await this.jwtService.signAsync(payload)
+
+        await this.authRepository.save({token, userId: user.id});
+
+        return {
+          access_token: token,
+        };
       }
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
-      const payload = { sub: user.id, username: user.username };
-      const token = await this.jwtService.signAsync(payload)
-
-      await this.authRepository.save({token, userId: user.id});
-
-      return {
-        access_token: token,
-      };
+    } catch (e) {
+      throw new HttpException('Server Error', HttpStatus.INTERNAL_SERVER_ERROR);
     }
-    throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
 
   }
 
